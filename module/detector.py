@@ -15,7 +15,7 @@ class Detector(nn.Module):
         self.backbone = ShuffleNetV2(self.stage_repeats, self.stage_out_channels, load_param)
 
         self.upsample = nn.Upsample(scale_factor=2, mode='nearest')
-        self.avg_pool = nn.AvgPool2d(kernel_size=3, stride=2, padding=1)
+        self.avg_pool = nn.AvgPool2d(kernel_size=2, stride=2, padding=0)
         # TODO: 实验maxpool效果
         # self.max_pool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
         self.SPP = SPP(sum(self.stage_out_channels[-3:]), self.stage_out_channels[-2])
