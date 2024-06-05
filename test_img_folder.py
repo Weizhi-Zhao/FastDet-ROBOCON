@@ -77,38 +77,6 @@ if __name__ == "__main__":
         img = torch.from_numpy(img.transpose(0, 3, 1, 2))
         img = img.to(device).float() / 255.0
 
-        # 导出onnx模型
-        if opt.onnx:
-            torch.onnx.export(
-                model,  # model being run
-                # model input (or a tuple for multiple inputs)
-                img,
-                # where to save the model (can be a file or file-like object)
-                "./FastestDet.onnx",
-                export_params=True,  # store the trained parameter weights inside the model file
-                opset_version=11,  # the ONNX version to export the model to
-                do_constant_folding=True,
-            )  # whether to execute constant folding for optimization
-            # onnx-sim
-            onnx_model = onnx.load("./FastestDet.onnx")  # load onnx model
-            model_simp, check = simplify(onnx_model)
-            assert check, "Simplified ONNX model could not be validated"
-            print("onnx sim sucess...")
-            onnx.save(model_simp, "./FastestDet.onnx")
-
-        # 导出torchscript模型
-        if opt.torchscript:
-            import copy
-
-            model_cpu = copy.deepcopy(model).cpu()
-            x = torch.rand(1, 3, cfg.input_height, cfg.input_width)
-            mod = torch.jit.trace(model_cpu, x)
-            mod.save("./FastestDet.pt")
-            print(
-                "to convert torchscript to pnnx/ncnn: ./pnnx FastestDet.pt inputshape=[1,3,%d,%d]"
-                % (cfg.input_height, cfg.input_height)
-            )
-
         # 模型推理
         start = time.perf_counter()
         # with torch.no_grad():
@@ -140,12 +108,13 @@ if __name__ == "__main__":
             x1, y1 = int(box[0] * W), int(box[1] * H)
             x2, y2 = int(box[2] * W), int(box[3] * H)
 
+            # print(x1, y1, x2, y2)
             cv2.rectangle(ori_img, (x1, y1), (x2, y2), (255, 255, 0), 2)
             cv2.putText(
                 ori_img, "%.2f" % obj_score, (x1, y1 - 5), 0, 0.7, (0, 255, 0), 2
             )
             cv2.putText(ori_img, category, (x1, y1 - 25), 0, 0.7, (0, 255, 0), 2)
 
-        cv2.imwrite("./results_new/" + f"result_{file}", ori_img)
+        cv2.imwrite("./results/" + f"result_{file}", ori_img)
 
 # python test_img_folder.py --yaml configs/robocon.yaml --weight checkpoint\weight_AP05_0.875423_200-epoch.pth --img dataset\val
