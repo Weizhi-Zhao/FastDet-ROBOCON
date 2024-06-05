@@ -4,3 +4,5 @@ results/
 /data_03_10
 /results_new
 data_03_10.zip
+configs/robocon.yaml
+requirements.txt

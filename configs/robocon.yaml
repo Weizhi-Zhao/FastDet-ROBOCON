@@ -1,7 +1,7 @@
 DATASET:
-  TRAIN: "C:/ZWZ/ROBOCON/FastDet-ROBOCON/dataset/train.txt"
-  VAL: "C:/ZWZ/ROBOCON/FastDet-ROBOCON/dataset/val.txt"
-  NAMES: "C:/ZWZ/ROBOCON/FastDet-ROBOCON/dataset/category.names"
+  TRAIN: "./dataset/train.txt"
+  VAL: "./dataset/val.txt"
+  NAMES: "./dataset/labels/classes.txt"
   ANCHOR_SIZES:
     [[0.07711985, 0.10994485],
      [0.12846589, 0.21537308],
@@ -15,7 +15,7 @@ TRAIN:
   LR: 0.001
   THRESH: 0.25
   WARMUP: true
-  BATCH_SIZE: 64
+  BATCH_SIZE: 16
   END_EPOCH: 350
   MILESTIONES:
     - 100

@@ -20,7 +20,7 @@ class FastestDet:
     def __init__(self):
         # 指定训练配置文件
         parser = argparse.ArgumentParser()
-        parser.add_argument('--yaml', type=str, default="", help='.yaml config')
+        parser.add_argument('--yaml', type=str, default="./configs/robocon.yaml", help='.yaml config')
         parser.add_argument('--weight', type=str, default=None, help='.weight config')
 
         opt = parser.parse_args()
@@ -92,7 +92,7 @@ class FastestDet:
             batch_size=self.cfg.batch_size,
             shuffle=False,
             collate_fn=collate_fn,
-            num_workers=4,
+            num_workers=1,
             drop_last=False,
             persistent_workers=True,
         )
@@ -102,7 +102,7 @@ class FastestDet:
             batch_size=self.cfg.batch_size,
             shuffle=True,
             collate_fn=collate_fn,
-            num_workers=4,
+            num_workers=1,
             drop_last=True,
             persistent_workers=True,
         )
@@ -126,9 +126,10 @@ class FastestDet:
                 iou, obj, cls, total_loss = self.loss_function(preds, targets)
                 self.optimizer.zero_grad()
                 # 反向传播求解梯度
-                total_loss.backward()
-                # 更新模型参数
-                self.optimizer.step()
+                if total_loss != 0:
+                    total_loss.backward()
+                    # 更新模型参数
+                    self.optimizer.step()
 
                 # 学习率预热
                 for g in self.optimizer.param_groups:
