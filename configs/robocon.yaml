@@ -1,7 +1,7 @@
 DATASET:
-  TRAIN: "./dataset/train.txt"
-  VAL: "./dataset/val.txt"
-  NAMES: "./dataset/labels/classes.txt"
+  TRAIN: "D:/data/dataset/train.txt"
+  VAL: "D:/data/dataset/val.txt"
+  NAMES: "D:/data/dataset/robocon.names"
   ANCHOR_SIZES:
     [[0.07711985, 0.10994485],
      [0.12846589, 0.21537308],
@@ -15,7 +15,7 @@ TRAIN:
   LR: 0.001
   THRESH: 0.25
   WARMUP: true
-  BATCH_SIZE: 16
+  BATCH_SIZE: 64
   END_EPOCH: 350
   MILESTIONES:
     - 100

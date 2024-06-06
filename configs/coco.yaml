@@ -1,6 +1,6 @@
 DATASET:
-  TRAIN: "/home/qiuqiu/Desktop/coco2017/train2017.txt"
-  VAL: "/home/qiuqiu/Desktop/coco2017/val2017.txt"
+  TRAIN: "D:/data_03_10/dataset/train.txt"
+  VAL: "D:/data_03_10/dataset/val.txt"
   NAMES: "configs/coco.names"
 MODEL:
   NC: 80
